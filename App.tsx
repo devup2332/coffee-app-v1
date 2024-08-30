@@ -1,20 +1,54 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer } from "@react-navigation/native";
+import DetailsScreen from "./src/pages/DetailsScreen";
+import PaymentScreen from "./src/pages/PaymentScreen";
+import TabNavigator from "./src/navigators/TabNavigator";
+import { useFonts } from "expo-font";
 
-export default function App() {
+const Stack = createNativeStackNavigator();
+
+const App = () => {
+  const [fontsLoaded] = useFonts({
+    IcoMoon: require("./src/assets/fonts/app_icons.ttf"),
+    "Poppins-Regular": require("./src/assets/fonts/Poppins-Regular.ttf"),
+    "Poppins-Bold": require("./src/assets/fonts/Poppins-Bold.ttf"),
+    "Poppins-SemiBold": require("./src/assets/fonts/Poppins-SemiBold.ttf"),
+  });
+
+  console.log({ fontsLoaded });
+  if (!fontsLoaded) return;
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen
+          name="Tab"
+          component={TabNavigator}
+          options={{
+            animation: "slide_from_bottom",
+          }}
+        />
+        <Stack.Screen
+          name="Details"
+          component={DetailsScreen}
+          options={{
+            animation: "slide_from_bottom",
+          }}
+        />
+        <Stack.Screen
+          name="Payments"
+          component={PaymentScreen}
+          options={{
+            animation: "slide_from_bottom",
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
