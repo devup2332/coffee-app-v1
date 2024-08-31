@@ -20,7 +20,7 @@ const TabNavigator = () => {
         tabBarShowLabel: false,
         tabBarStyle: styles.tabBarStyles,
         tabBarBackground: () => (
-          <BlurView intensity={6} style={styles.BlurViewStyles} />
+          <BlurView intensity={10} style={styles.BlurViewStyles} />
         ),
       }}
     >

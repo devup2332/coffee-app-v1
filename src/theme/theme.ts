@@ -50,7 +50,7 @@ interface Color {
 export const COLORS: Color = {
   primaryRedHex: '#DC3535',
   primaryOrangeHex: '#D17842',
-  primaryBlackHex: '#0C0F14',
+  primaryBlackHex: '#0c1013',
   primaryDarkGreyHex: '#141921',
   secondaryDarkGreyHex: '#21262E',
   primaryGreyHex: '#252A32',
@@ -58,7 +58,7 @@ export const COLORS: Color = {
   primaryLightGreyHex: '#52555A',
   secondaryLightGreyHex: '#AEAEAE',
   primaryWhiteHex: '#FFFFFF',
-  primaryBlackRGBA: 'rgba(12,15,20,0.5)',
+  primaryBlackRGBA: '#0c1013',
   secondaryBlackRGBA: 'rgba(0,0,0,0.7)',
 };
 
