@@ -34,7 +34,7 @@ export interface CoffeeCardProps {
   buttonPressHandler: () => void;
 }
 export interface IPrice {
-  size: "S" | "M" | "L";
+  size: string;
   price: string;
   currency: string;
 }
@@ -72,7 +72,7 @@ const CoffeeCard: React.FC<CoffeeCardProps> = ({
       <Text style={styles.CardSubtitle}>{special_ingredient}</Text>
       <View style={styles.CardFooterRow}>
         <Text style={styles.CardPriceCurrency}>
-          {mediumPrice?.currency} <Text>{mediumPrice?.price}</Text>
+          {mediumPrice?.currency} <Text style={styles.CardPriceCurrencyNumber}>{mediumPrice?.price}</Text>
         </Text>
         <TouchableOpacity>
           <BGIcon
@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   CardLinearGradientContainer: {
-    marginRight: SPACING.space_15,
     padding: SPACING.space_15,
     borderRadius: BORDERRADIUS.radius_25,
   },
@@ -135,11 +134,17 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhiteHex,
     fontSize: FONTSIZE.size_10,
   },
-  CardPrice: {},
+  CardPrice: {
+    fontFamily: FONTFAMILY.poppins_semibold,
+    color: COLORS.primaryWhiteHex
+  },
   CardPriceCurrency: {
     fontFamily: FONTFAMILY.poppins_semibold,
     color: COLORS.primaryOrangeHex,
     fontSize: FONTSIZE.size_18,
   },
+  CardPriceCurrencyNumber: {
+    color: COLORS.primaryWhiteHex
+  }
 });
 export default CoffeeCard;

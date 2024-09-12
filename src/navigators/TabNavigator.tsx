@@ -19,8 +19,9 @@ const TabNavigator = () => {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: styles.tabBarStyles,
+        
         tabBarBackground: () => (
-          <BlurView intensity={10} style={styles.BlurViewStyles} />
+          <BlurView intensity={15} style={styles.BlurViewStyles} />
         ),
       }}
     >
@@ -98,9 +99,7 @@ const styles = StyleSheet.create({
     borderTopColor: "transparent",
   },
   BlurViewStyles: {
-    // backgroundColor: '#000000',
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "transparent",
+    backgroundColor: COLORS.primaryBlackRGBA,
     position: "absolute",
     top: 0,
     bottom: 0,
