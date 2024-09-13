@@ -25,8 +25,6 @@ import HeaderBar from "../components/HeaderBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomIcon from "../components/CustomIcon";
 import CoffeeCard, { CoffeeCardProps } from "../components/CoffeeCard";
-import { ScreenContainerProps } from "react-native-screens";
-import { useNavigation } from "@react-navigation/native";
 
 interface HomeScreenProps {
   navigation: any;
@@ -48,9 +46,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const BeanList = useStore((state) => state.BeanList);
   const FlatListRef = useRef<FlatList>(null);
   const InputRef = useRef<TextInput>(null);
-  const [categories, setCategories] = useState(
-    getCategoriesFromData(CoffeeList)
-  );
+  const categories = getCategoriesFromData(CoffeeList);
   const [searchText, setSearchText] = useState("");
   const [categoryIndex, setCategoryIndex] = useState({
     index: 0,
@@ -199,7 +195,11 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.push("Details");
+                  navigation.push("Details", {
+                    index: item.index,
+                    id: item.id,
+                    type: item.type,
+                  });
                 }}
               >
                 <CoffeeCard {...(item as CoffeeCardProps)} />

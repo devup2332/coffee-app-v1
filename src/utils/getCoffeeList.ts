@@ -1,4 +1,6 @@
-export const getCoffeeList = (category: string, data: any[]) => {
+import { ItemCoffee } from "../store/store";
+
+export const getCoffeeList = (category: string, data: ItemCoffee[]) => {
   if (category === "All") {
     return data;
   }

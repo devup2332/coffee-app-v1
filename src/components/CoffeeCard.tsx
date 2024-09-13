@@ -18,6 +18,7 @@ import {
 } from "../theme/theme";
 import CustomIcon from "./CustomIcon";
 import BGIcon from "./BGIcon";
+import { IPrice } from "../store/store";
 
 const CARD_WIDTH = Dimensions.get("window").width * 0.32;
 
@@ -32,11 +33,6 @@ export interface CoffeeCardProps {
   average_rating: number;
   prices: IPrice[];
   buttonPressHandler: () => void;
-}
-export interface IPrice {
-  size: string;
-  price: string;
-  currency: string;
 }
 
 const CoffeeCard: React.FC<CoffeeCardProps> = ({
