@@ -1,8 +1,17 @@
-import { View, Text, StyleSheet, StatusBar, ScrollView } from "react-native";
-import React from "react";
-import { COLORS } from "../theme/theme";
+import {
+  View,
+  Text,
+  StyleSheet,
+  StatusBar,
+  ScrollView,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+} from "react-native";
+import React, { useState } from "react";
+import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from "../theme/theme";
 import ImageBackgroundInfo from "../components/ImageBackgroundInfo";
 import { useStore } from "../store/store";
+import PaymentFooter from "../components/PaymentFooter";
 
 interface DetailsScreenProps {
   navigation: any;
@@ -10,13 +19,16 @@ interface DetailsScreenProps {
 }
 
 const DetailsScreen: React.FC<DetailsScreenProps> = ({ navigation, route }) => {
+  const [fullDesk, setFullDesk] = useState(false);
+
   const addToFavoriteList = useStore((state) => state.addToFavoriteList);
   const deleteFromFavoriteList = useStore(
-    (state) => state.deleteFromFavoriteList
+    (state) => state.deleteFromFavoriteList,
   );
   const itemFounded = useStore((state) => {
     return route.params.type === "Coffee" ? state.CoffeeList : state.BeanList;
   }).find((item: any) => item.id === route.params.id);
+  const [price, setPrice] = useState(itemFounded?.prices[0]);
 
   if (!itemFounded) {
     return (
@@ -32,11 +44,6 @@ const DetailsScreen: React.FC<DetailsScreenProps> = ({ navigation, route }) => {
 
   const favouriteHandler = (favourite: boolean, type: string, id: string) => {
     favourite ? deleteFromFavoriteList(type, id) : addToFavoriteList(type, id);
-    console.log({
-      favourite,
-      type,
-      id,
-    });
   };
 
   return (
@@ -51,6 +58,78 @@ const DetailsScreen: React.FC<DetailsScreenProps> = ({ navigation, route }) => {
           EnableBackHandler
           ToggleFavourite={favouriteHandler}
           BackHandler={backHandler}
+        />
+
+        <View style={styles.FooterInfoArea}>
+          <Text style={styles.InfoTitle}>Description</Text>
+          {fullDesk ? (
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setFullDesk(!fullDesk);
+              }}
+            >
+              <Text style={styles.TextDescription}>
+                {itemFounded.description}
+              </Text>
+            </TouchableWithoutFeedback>
+          ) : (
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setFullDesk(!fullDesk);
+              }}
+            >
+              <Text numberOfLines={3} style={styles.TextDescription}>
+                {itemFounded.description}
+              </Text>
+            </TouchableWithoutFeedback>
+          )}
+          <Text style={styles.InfoTitle}>Size</Text>
+          <View style={styles.SizeOuterContainer}>
+            {itemFounded.prices.map((item) => {
+              return (
+                <TouchableOpacity
+                  key={item.size}
+                  onPress={() => {
+                    setPrice(item);
+                  }}
+                  style={[
+                    styles.SizeBox,
+                    {
+                      borderColor:
+                        item.size === price?.size
+                          ? COLORS.primaryOrangeHex
+                          : COLORS.primaryDarkGreyHex,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.SizeText,
+                      {
+                        fontSize:
+                          itemFounded.type === "bean"
+                            ? FONTSIZE.size_14
+                            : FONTSIZE.size_16,
+                        color:
+                          item.size === price?.size
+                            ? COLORS.primaryOrangeHex
+                            : COLORS.primaryLightGreyHex,
+                      },
+                    ]}
+                  >
+                    {item.size}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
+        <PaymentFooter
+          price={price}
+          buttonTitle="Add to Cart"
+          bottomPressHandler={() => {
+            console.log("Here");
+          }}
         />
       </ScrollView>
     </View>
@@ -67,5 +146,37 @@ const styles = StyleSheet.create({
   ScrollViewContainer: {
     flex: 1,
   },
+  FooterInfoArea: {
+    padding: SPACING.space_20,
+  },
+  InfoTitle: {
+    fontFamily: FONTFAMILY.poppins_semibold,
+    fontSize: FONTSIZE.size_16,
+    color: COLORS.primaryWhiteHex,
+    marginBottom: SPACING.space_10,
+  },
+  TextDescription: {
+    letterSpacing: 0.5,
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.primaryWhiteHex,
+    marginBottom: SPACING.space_30,
+  },
+  SizeOuterContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: SPACING.space_20,
+  },
+  SizeBox: {
+    flex: 1,
+    backgroundColor: COLORS.primaryDarkGreyHex,
+    alignItems: "center",
+    justifyContent: "center",
+    height: SPACING.space_24 * 2,
+    borderRadius: SPACING.space_10,
+    borderWidth: 2,
+  },
+  SizeText: {},
 });
 export default DetailsScreen;

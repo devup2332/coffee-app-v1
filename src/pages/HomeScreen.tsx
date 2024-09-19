@@ -24,7 +24,7 @@ import {
 import HeaderBar from "../components/HeaderBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomIcon from "../components/CustomIcon";
-import CoffeeCard, { CoffeeCardProps } from "../components/CoffeeCard";
+import CoffeeCard from "../components/CoffeeCard";
 
 interface HomeScreenProps {
   navigation: any;
@@ -33,10 +33,8 @@ interface HomeScreenProps {
 const debounce = (func: (...args: any) => any, timeout: number = 300) => {
   let timer: NodeJS.Timeout | undefined;
   return (...args: any[]) => {
-    console.log({ args });
     clearTimeout(timer);
     timer = setTimeout(() => {
-      console.log("Here", func.arguments);
       func.apply(null, args);
     }, timeout);
   };
@@ -202,7 +200,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   });
                 }}
               >
-                <CoffeeCard {...(item as CoffeeCardProps)} />
+                <CoffeeCard item={item} />
               </TouchableOpacity>
             );
           }}
@@ -222,8 +220,16 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity>
-                <CoffeeCard {...(item as CoffeeCardProps)} />
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.push("Details", {
+                    index: item.index,
+                    id: item.id,
+                    type: item.type,
+                  });
+                }}
+              >
+                <CoffeeCard item={item} />
               </TouchableOpacity>
             );
           }}

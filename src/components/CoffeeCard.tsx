@@ -18,30 +18,22 @@ import {
 } from "../theme/theme";
 import CustomIcon from "./CustomIcon";
 import BGIcon from "./BGIcon";
-import { IPrice } from "../store/store";
+import { IPrice, ItemCoffee } from "../store/store";
 
 const CARD_WIDTH = Dimensions.get("window").width * 0.32;
 
 export interface CoffeeCardProps {
-  id: string;
-  index: number;
-  type: string;
-  rosted: string;
-  imagelink_square: ImageProps;
-  name: string;
-  special_ingredient: string;
-  average_rating: number;
-  prices: IPrice[];
-  buttonPressHandler: () => void;
+  item: ItemCoffee;
 }
 
-const CoffeeCard: React.FC<CoffeeCardProps> = ({
-  imagelink_square,
-  average_rating,
-  name,
-  special_ingredient,
-  prices,
-}) => {
+const CoffeeCard: React.FC<CoffeeCardProps> = ({ item }) => {
+  const {
+    name,
+    special_ingredient,
+    average_rating,
+    imagelink_square,
+    prices,
+  } = item
   const mediumPrice = prices.find((price) => price.size === "M");
   return (
     <LinearGradient
@@ -68,7 +60,10 @@ const CoffeeCard: React.FC<CoffeeCardProps> = ({
       <Text style={styles.CardSubtitle}>{special_ingredient}</Text>
       <View style={styles.CardFooterRow}>
         <Text style={styles.CardPriceCurrency}>
-          {mediumPrice?.currency} <Text style={styles.CardPriceCurrencyNumber}>{mediumPrice?.price}</Text>
+          {mediumPrice?.currency}{" "}
+          <Text style={styles.CardPriceCurrencyNumber}>
+            {mediumPrice?.price}
+          </Text>
         </Text>
         <TouchableOpacity>
           <BGIcon
@@ -132,7 +127,7 @@ const styles = StyleSheet.create({
   },
   CardPrice: {
     fontFamily: FONTFAMILY.poppins_semibold,
-    color: COLORS.primaryWhiteHex
+    color: COLORS.primaryWhiteHex,
   },
   CardPriceCurrency: {
     fontFamily: FONTFAMILY.poppins_semibold,
@@ -140,7 +135,7 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_18,
   },
   CardPriceCurrencyNumber: {
-    color: COLORS.primaryWhiteHex
-  }
+    color: COLORS.primaryWhiteHex,
+  },
 });
 export default CoffeeCard;

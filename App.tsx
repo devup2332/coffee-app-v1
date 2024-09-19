@@ -18,7 +18,6 @@ const App = () => {
     "Poppins-Medium": require("./src/assets/fonts/Poppins-Medium.ttf"),
   });
 
-  console.log({ fontsLoaded });
   if (!fontsLoaded) return;
   return (
     <NavigationContainer>
