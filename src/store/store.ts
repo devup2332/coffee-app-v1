@@ -17,6 +17,7 @@ interface IStore {
   deleteFromFavoriteList: Function;
 }
 
+
 export interface ItemCoffee {
   id: string;
   name: string;

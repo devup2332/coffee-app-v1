@@ -20,6 +20,7 @@ interface DetailsScreenProps {
 
 const DetailsScreen: React.FC<DetailsScreenProps> = ({ navigation, route }) => {
   const [fullDesk, setFullDesk] = useState(false);
+  console.log("Change")
 
   const addToFavoriteList = useStore((state) => state.addToFavoriteList);
   const deleteFromFavoriteList = useStore(
