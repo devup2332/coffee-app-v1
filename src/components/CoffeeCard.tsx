@@ -18,23 +18,21 @@ import {
 } from "../theme/theme";
 import CustomIcon from "./CustomIcon";
 import BGIcon from "./BGIcon";
-import { IPrice, ItemCoffee } from "../store/store";
+import { CartItem, IPrice, ItemCoffee } from "../store/store";
 
 const CARD_WIDTH = Dimensions.get("window").width * 0.32;
 
 export interface CoffeeCardProps {
   item: ItemCoffee;
+  addToCartHandler: (item: CartItem) => void;
 }
 
-const CoffeeCard: React.FC<CoffeeCardProps> = ({ item }) => {
-  const {
-    name,
-    special_ingredient,
-    average_rating,
-    imagelink_square,
-    prices,
-  } = item
-  const mediumPrice = prices.find((price) => price.size === "M");
+const CoffeeCard: React.FC<CoffeeCardProps> = ({ item, addToCartHandler }) => {
+  const { name, special_ingredient, average_rating, imagelink_square, prices } =
+    item;
+  const mediumPrice = prices.find(
+    (price) => price.size === "M" || price.size === "250gm",
+  );
   return (
     <LinearGradient
       start={{ x: 0, y: 0 }}
@@ -65,7 +63,21 @@ const CoffeeCard: React.FC<CoffeeCardProps> = ({ item }) => {
             {mediumPrice?.price}
           </Text>
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            addToCartHandler({
+              ...item,
+              prices: [
+                {
+                  size: mediumPrice!.size,
+                  price: mediumPrice!.price,
+                  currency: mediumPrice!.currency,
+                  quantity: 1,
+                },
+              ],
+            })
+          }
+        >
           <BGIcon
             color={COLORS.primaryWhiteHex}
             name="add"

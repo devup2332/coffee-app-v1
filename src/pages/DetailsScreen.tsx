@@ -20,16 +20,17 @@ interface DetailsScreenProps {
 
 const DetailsScreen: React.FC<DetailsScreenProps> = ({ navigation, route }) => {
   const [fullDesk, setFullDesk] = useState(false);
-  console.log("Change")
-
   const addToFavoriteList = useStore((state) => state.addToFavoriteList);
+  const addToCart = useStore((state) => state.addToCartList);
   const deleteFromFavoriteList = useStore(
     (state) => state.deleteFromFavoriteList,
   );
+
+  // Finded all data from an ID
   const itemFounded = useStore((state) => {
     return route.params.type === "Coffee" ? state.CoffeeList : state.BeanList;
   }).find((item: any) => item.id === route.params.id);
-  const [price, setPrice] = useState(itemFounded?.prices[0]);
+  const [price, setPrice] = useState(itemFounded!.prices[0]);
 
   if (!itemFounded) {
     return (
@@ -129,7 +130,19 @@ const DetailsScreen: React.FC<DetailsScreenProps> = ({ navigation, route }) => {
           price={price}
           buttonTitle="Add to Cart"
           bottomPressHandler={() => {
-            console.log("Here");
+            const newItem = {
+              ...itemFounded,
+              prices: [
+                {
+                  size: price.size,
+                  quantity: 1,
+                  currency: price.currency,
+                  price: price.price,
+                },
+              ],
+            };
+            addToCart(newItem);
+            navigation.navigate("Cart");
           }}
         />
       </ScrollView>

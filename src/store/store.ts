@@ -10,13 +10,13 @@ interface IStore {
   CoffeeList: ItemCoffee[];
   BeanList: ItemCoffee[];
   FavoritesList: any[];
-  CartList: never[];
+  CartList: CartItem[];
   CartPrice: number;
   OrderHistoryList: never[];
   addToFavoriteList: Function;
   deleteFromFavoriteList: Function;
+  addToCartList: (newItem: CartItem) => void;
 }
-
 
 export interface ItemCoffee {
   id: string;
@@ -33,6 +33,30 @@ export interface ItemCoffee {
   average_rating: number;
   favourite: boolean;
   index: number;
+}
+
+export interface CartItem {
+  id: string;
+  name: string;
+  type: string;
+  description: string;
+  ingredients: string;
+  roasted: string;
+  prices: PriceCart[];
+  imagelink_portrait: ImageProps;
+  ratings_count: string;
+  imagelink_square: ImageProps;
+  special_ingredient: string;
+  average_rating: number;
+  favourite: boolean;
+  index: number;
+}
+
+export interface PriceCart {
+  size: string;
+  price: string;
+  currency: string;
+  quantity: number;
 }
 
 export interface IPrice {
@@ -76,7 +100,7 @@ export const useStore = create<IStore>()(
                 }
               });
             }
-          })
+          }),
         ),
       deleteFromFavoriteList: (type: string, id: string) =>
         set(
@@ -109,12 +133,37 @@ export const useStore = create<IStore>()(
               }
             });
             state.FavoritesList.splice(spliceIndex, 1);
-          })
+          }),
+        ),
+      addToCartList: (newItem: CartItem) =>
+        set(
+          produce((state: IStore) => {
+            const currentCart = state.CartList;
+
+            const c = currentCart.find((item) => item.id === newItem.id);
+
+            if (c) {
+              const priceFounded = c.prices.find(
+                (p) => p.size === newItem.prices[0].size,
+              );
+              if (priceFounded) {
+                priceFounded.quantity += 1;
+              } else {
+                c.prices.push(newItem.prices[0]);
+              }
+            } else {
+              currentCart.push(newItem);
+            }
+
+            const n = parseFloat(newItem.prices[0].price);
+
+            state.CartPrice = Math.round((state.CartPrice + n) * 100) / 100;
+          }),
         ),
     }),
     {
       name: "coffee-app",
       storage: createJSONStorage(() => AsyncStorage),
-    }
-  )
+    },
+  ),
 );

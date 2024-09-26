@@ -4,7 +4,10 @@ import { IPrice } from "../store/store";
 import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from "../theme/theme";
 
 interface PaymentFooterProps {
-  price?: IPrice;
+  price?: {
+    price: string;
+    currency: string;
+  };
   buttonTitle: string;
   bottomPressHandler: () => void;
 }
@@ -40,7 +43,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: SPACING.space_20,
-    padding: SPACING.space_20,
+    paddingVertical: SPACING.space_20,
   },
   PriceContainer: {
     alignItems: "center",

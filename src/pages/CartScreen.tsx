@@ -1,11 +1,58 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import React from "react";
-import { COLORS } from "../theme/theme";
+import { COLORS, SPACING } from "../theme/theme";
+import { useStore } from "../store/store";
+import HeaderBar from "../components/HeaderBar";
+import { StatusBar } from "expo-status-bar";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import EmptyListAnimation from "../components/EmptyListAnimation";
+import PaymentFooter from "../components/PaymentFooter";
 
-const CartScreen = () => {
+interface CartScreenProps {
+  navigation: any;
+}
+
+const CartScreen = ({ navigation }: CartScreenProps) => {
+  const cartList = useStore((state) => state.CartList);
+  const cartPrice = useStore((state) => state.CartPrice);
+  const tabBarHeight = useBottomTabBarHeight();
+
+  const bottomPressHandler = () => {
+    navigation.navigate("Payments");
+  };
+
   return (
     <View style={styles.container}>
-      <Text>CartScreen</Text>
+      <StatusBar backgroundColor={COLORS.primaryBlackHex} />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.ScrollViewFlex}
+      >
+        <View
+          style={[styles.ScrollViewInnerView, { marginBottom: tabBarHeight }]}
+        >
+          <View style={styles.ItemContainer}>
+            <HeaderBar title="Cart" />
+            {cartList.length === 0 ? (
+              <EmptyListAnimation title="Cart is empty" />
+            ) : (
+              <View></View>
+            )}
+          </View>
+          {cartList.length !== 0 && (
+            <PaymentFooter
+              bottomPressHandler={() => {
+                bottomPressHandler();
+              }}
+              buttonTitle="Pay"
+              price={{
+                price: cartPrice.toString(),
+                currency: "$",
+              }}
+            />
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -13,10 +60,17 @@ const CartScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    paddingHorizontal: SPACING.space_30,
     backgroundColor: COLORS.primaryBlackHex,
-    color: COLORS.primaryWhiteHex,
+  },
+  ScrollViewFlex: {
+    flex: 1,
+  },
+  ScrollViewInnerView: {
+    flex: 1,
+  },
+  ItemContainer: {
+    flex: 1,
   },
 });
 

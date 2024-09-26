@@ -7,10 +7,11 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
-import { useStore } from "../store/store";
+import { CartItem, ItemCoffee, useStore } from "../store/store";
 import { getCategoriesFromData } from "../utils/getCategoriesfromdata";
 import { getCoffeeList } from "../utils/getCoffeeList";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
@@ -44,6 +45,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const BeanList = useStore((state) => state.BeanList);
   const FlatListRef = useRef<FlatList>(null);
   const InputRef = useRef<TextInput>(null);
+  const addToCartList = useStore((state) => state.addToCartList);
   const categories = getCategoriesFromData(CoffeeList);
   const [searchText, setSearchText] = useState("");
   const [categoryIndex, setCategoryIndex] = useState({
@@ -51,7 +53,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     category: categories[0],
   });
   const [sortedCoffee, setSortedCoffee] = useState(
-    getCoffeeList(categoryIndex.category, CoffeeList)
+    getCoffeeList(categoryIndex.category, CoffeeList),
   );
 
   const searchByText = (text: string) => {
@@ -64,7 +66,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       index: 0,
     });
     setSortedCoffee(
-      CoffeeList.filter((item) => item.name.toLowerCase().includes(text))
+      CoffeeList.filter((item) => item.name.toLowerCase().includes(text)),
     );
   };
 
@@ -76,6 +78,16 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       index: 0,
     });
     setSortedCoffee([...CoffeeList]);
+  };
+
+  const addToCart = (item: CartItem) => {
+    const message = `${item.name} Added to cart`;
+    addToCartList(item);
+    ToastAndroid.showWithGravity(
+      message,
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
   };
 
   const tabBarHeight = useBottomTabBarHeight();
@@ -200,7 +212,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   });
                 }}
               >
-                <CoffeeCard item={item} />
+                <CoffeeCard item={item} addToCartHandler={addToCart} />
               </TouchableOpacity>
             );
           }}
@@ -229,7 +241,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   });
                 }}
               >
-                <CoffeeCard item={item} />
+                <CoffeeCard item={item} addToCartHandler={addToCart} />
               </TouchableOpacity>
             );
           }}
