@@ -16,6 +16,9 @@ interface IStore {
   addToFavoriteList: Function;
   deleteFromFavoriteList: Function;
   addToCartList: (newItem: CartItem) => void;
+  increaseQuantity: (id: string, size: string) => void;
+  decreaseQuantity: (id: string, size: string) => void;
+  calculatePrice: () => void;
 }
 
 export interface ItemCoffee {
@@ -158,6 +161,51 @@ export const useStore = create<IStore>()(
             const n = parseFloat(newItem.prices[0].price);
 
             state.CartPrice = Math.round((state.CartPrice + n) * 100) / 100;
+          }),
+        ),
+      increaseQuantity: (id: string, size: string) =>
+        set(
+          produce((state: IStore) => {
+            const item = state.CartList.find((item) => item.id === id);
+
+            const p = item?.prices.find((price) => price.size === size);
+            if (p) {
+              p.quantity += 1;
+              state.calculatePrice();
+            }
+          }),
+        ),
+      decreaseQuantity: (id: string, size: string) =>
+        set(
+          produce((state: IStore) => {
+            const item = state.CartList.find((item) => item.id === id);
+            const p = item?.prices.find((price) => price.size === size);
+            if (!item || !p) return;
+            if (p.quantity > 1) {
+              p.quantity -= 1;
+            } else {
+              if (item.prices.length === 1) {
+                state.CartList = state.CartList.filter(
+                  (item) => item.id !== id,
+                );
+              } else {
+                item.prices = item.prices.filter(
+                  (price) => price.size !== size,
+                );
+              }
+            }
+          }),
+        ),
+      calculatePrice: () =>
+        set(
+          produce((state: IStore) => {
+            let finalPrice = 0;
+            state.CartList.forEach((item) => {
+              item.prices.forEach((price) => {
+                finalPrice += parseFloat(price.price) * price.quantity;
+              });
+            });
+            state.CartPrice = Math.round(finalPrice * 100) / 100;
           }),
         ),
     }),

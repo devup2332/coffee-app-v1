@@ -4,6 +4,7 @@ import {
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import React from "react";
 import { ItemCoffee } from "../store/store";
@@ -23,6 +24,9 @@ interface ImageBackgroundInfoProps {
   ToggleFavourite: Function;
   BackHandler: Function;
 }
+
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
   item,
@@ -121,9 +125,7 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
                     size={FONTSIZE.size_16}
                     color={COLORS.primaryOrangeHex}
                   />
-                  <Text style={styles.PropertyTextLast}>
-                    {ingredients}
-                  </Text>
+                  <Text style={styles.PropertyTextLast}>{ingredients}</Text>
                 </View>
               </View>
             </View>
@@ -150,12 +152,13 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
 
 const styles = StyleSheet.create({
   ItemBackgroundImage: {
-    width: "100%",
-    aspectRatio: 20 / 25,
+    width: windowWidth,
+    aspectRatio: .8,
     justifyContent: "space-between",
   },
   ImageHeaderBarContainerWithBack: {
-    padding: SPACING.space_30,
+    paddingHorizontal: windowWidth * 0.03,
+    marginVertical: windowHeight * 0.03,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -228,7 +231,7 @@ const styles = StyleSheet.create({
   },
   RoastedContainer: {
     alignItems: "center",
-    justifyContent: 'center',
+    justifyContent: "center",
     width: 55 * 2 + SPACING.space_20,
     height: 55,
     backgroundColor: COLORS.primaryBlackHex,

@@ -6,17 +6,21 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import React, { useState } from "react";
 import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from "../theme/theme";
 import ImageBackgroundInfo from "../components/ImageBackgroundInfo";
 import { useStore } from "../store/store";
 import PaymentFooter from "../components/PaymentFooter";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface DetailsScreenProps {
   navigation: any;
   route: any;
 }
+
+const windowWidth = Dimensions.get("window").width;
 
 const DetailsScreen: React.FC<DetailsScreenProps> = ({ navigation, route }) => {
   const [fullDesk, setFullDesk] = useState(false);
@@ -49,7 +53,7 @@ const DetailsScreen: React.FC<DetailsScreenProps> = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} />
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -67,7 +71,7 @@ const DetailsScreen: React.FC<DetailsScreenProps> = ({ navigation, route }) => {
           {fullDesk ? (
             <TouchableWithoutFeedback
               onPress={() => {
-                setFullDesk(!fullDesk);
+                setFullDesk((prev) => !prev);
               }}
             >
               <Text style={styles.TextDescription}>
@@ -77,7 +81,7 @@ const DetailsScreen: React.FC<DetailsScreenProps> = ({ navigation, route }) => {
           ) : (
             <TouchableWithoutFeedback
               onPress={() => {
-                setFullDesk(!fullDesk);
+                setFullDesk((prev) => !prev);
               }}
             >
               <Text numberOfLines={3} style={styles.TextDescription}>
@@ -126,33 +130,37 @@ const DetailsScreen: React.FC<DetailsScreenProps> = ({ navigation, route }) => {
             })}
           </View>
         </View>
-        <PaymentFooter
-          price={price}
-          buttonTitle="Add to Cart"
-          bottomPressHandler={() => {
-            const newItem = {
-              ...itemFounded,
-              prices: [
-                {
-                  size: price.size,
-                  quantity: 1,
-                  currency: price.currency,
-                  price: price.price,
-                },
-              ],
-            };
-            addToCart(newItem);
-            navigation.navigate("Cart");
-          }}
-        />
       </ScrollView>
-    </View>
+      <PaymentFooter
+        price={price}
+        buttonTitle="Add to Cart"
+        customStyles={{
+          paddingHorizontal: windowWidth * 0.05,
+        }}
+        bottomPressHandler={() => {
+          const newItem = {
+            ...itemFounded,
+            prices: [
+              {
+                size: price.size,
+                quantity: 1,
+                currency: price.currency,
+                price: price.price,
+              },
+            ],
+          };
+          addToCart(newItem);
+          navigation.navigate("Cart");
+        }}
+      />
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
+    flexShrink: 0,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: COLORS.primaryBlackHex,
@@ -161,7 +169,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   FooterInfoArea: {
-    padding: SPACING.space_20,
+    padding: windowWidth * 0.05,
+    flex: 1,
+    flexShrink: 0,
   },
   InfoTitle: {
     fontFamily: FONTFAMILY.poppins_semibold,

@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { CartItem, ItemCoffee, useStore } from "../store/store";
+import { CartItem, useStore } from "../store/store";
 import { getCategoriesFromData } from "../utils/getCategoriesfromdata";
 import { getCoffeeList } from "../utils/getCoffeeList";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
@@ -23,13 +23,15 @@ import {
   SPACING,
 } from "../theme/theme";
 import HeaderBar from "../components/HeaderBar";
-import { SafeAreaView } from "react-native-safe-area-context";
 import CustomIcon from "../components/CustomIcon";
 import CoffeeCard from "../components/CoffeeCard";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface HomeScreenProps {
   navigation: any;
 }
+
+const windowWidth = Dimensions.get("window").width;
 
 const debounce = (func: (...args: any) => any, timeout: number = 300) => {
   let timer: NodeJS.Timeout | undefined;
@@ -99,7 +101,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         contentContainerStyle={styles.ScrollViewFlex}
       >
         {/* Header  */}
-        <HeaderBar title="Home Screen" />
+        <HeaderBar title="Home" />
         <Text style={styles.ScreenTitle}>
           Find the best{"\n"}coffee for you
         </Text>
@@ -255,7 +257,7 @@ const styles = StyleSheet.create({
   ScreenContainer: {
     flex: 1,
     backgroundColor: COLORS.primaryBlackHex,
-    paddingHorizontal: SPACING.space_30,
+    paddingHorizontal: windowWidth * 0.03,
   },
   ScrollViewFlex: {},
   ScreenTitle: {

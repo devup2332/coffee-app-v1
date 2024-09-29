@@ -10,15 +10,17 @@ interface PaymentFooterProps {
   };
   buttonTitle: string;
   bottomPressHandler: () => void;
+  customStyles?: object;
 }
 
 const PaymentFooter: React.FC<PaymentFooterProps> = ({
   price,
   buttonTitle,
   bottomPressHandler,
+  customStyles,
 }) => {
   return (
-    <View style={styles.PriceFooter}>
+    <View style={[styles.PriceFooter, customStyles]}>
       <View style={styles.PriceContainer}>
         <Text style={styles.PriceTitle}>Price</Text>
         <Text style={styles.PriceText}>
