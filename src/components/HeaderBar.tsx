@@ -1,21 +1,38 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from "../theme/theme";
 import GradientBGIcon from "./GradientBGIcon";
 import ProfilePic from "./ProfilePic";
+import { useNavigation } from "@react-navigation/native";
 
 interface HeaderBarProps {
   title?: string;
+  backButton?: boolean;
 }
 
-const HeaderBar: React.FC<HeaderBarProps> = ({ title }) => {
+const HeaderBar: React.FC<HeaderBarProps> = ({ title, backButton = false }) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.HeaderContainer}>
-      <GradientBGIcon
-        name="menu"
-        color={COLORS.primaryLightGreyHex}
-        size={FONTSIZE.size_16}
-      />
+      {backButton ? (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <GradientBGIcon
+            name="left"
+            color={COLORS.primaryLightGreyHex}
+            size={FONTSIZE.size_16}
+          />
+        </TouchableOpacity>
+      ) : (
+        <GradientBGIcon
+          name="menu"
+          color={COLORS.primaryLightGreyHex}
+          size={FONTSIZE.size_16}
+        />
+      )}
       {title && <Text style={styles.HeaderTitle}>{title}</Text>}
       <ProfilePic />
     </View>

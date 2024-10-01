@@ -9,16 +9,23 @@ import { produce } from "immer";
 interface IStore {
   CoffeeList: ItemCoffee[];
   BeanList: ItemCoffee[];
-  FavoritesList: any[];
+  FavoritesList: ItemCoffee[];
   CartList: CartItem[];
   CartPrice: number;
-  OrderHistoryList: never[];
+  orders: IOrder[];
   addToFavoriteList: Function;
   deleteFromFavoriteList: Function;
   addToCartList: (newItem: CartItem) => void;
   increaseQuantity: (id: string, size: string) => void;
   decreaseQuantity: (id: string, size: string) => void;
   calculatePrice: () => void;
+  generateOrder: () => void;
+}
+
+export interface IOrder {
+  createdAt: string;
+  totalPrice: number;
+  products: CartItem[];
 }
 
 export interface ItemCoffee {
@@ -76,7 +83,7 @@ export const useStore = create<IStore>()(
       FavoritesList: [],
       CartList: [],
       CartPrice: 0,
-      OrderHistoryList: [],
+      orders: [],
       addToFavoriteList: (type: string, id: string) =>
         set(
           produce((state: IStore) => {
@@ -206,6 +213,28 @@ export const useStore = create<IStore>()(
               });
             });
             state.CartPrice = Math.round(finalPrice * 100) / 100;
+          }),
+        ),
+
+      generateOrder: () =>
+        set(
+          produce((state: IStore) => {
+            const currentCart = state.CartList;
+            const newDate = new Date()
+
+            const newOrder: IOrder = {
+              products: currentCart,
+              totalPrice: state.CartPrice,
+              createdAt:
+                newDate.toDateString() +
+                " " +
+                new Date().toLocaleTimeString('en-US'),
+            };
+
+            state.orders.unshift(newOrder);
+            console.log(state.orders.length);
+            state.CartPrice = 0;
+            state.CartList = [];
           }),
         ),
     }),

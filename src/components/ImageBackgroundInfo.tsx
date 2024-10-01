@@ -21,8 +21,8 @@ import CustomIcon from "./CustomIcon";
 interface ImageBackgroundInfoProps {
   item: ItemCoffee;
   EnableBackHandler: boolean;
-  ToggleFavourite: Function;
-  BackHandler: Function;
+  toggleFavourite: (favorite: boolean, type: string, id: string) => void;
+  BackHandler?: Function;
 }
 
 const windowWidth = Dimensions.get("window").width;
@@ -31,7 +31,7 @@ const windowHeight = Dimensions.get("window").height;
 const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
   item,
   EnableBackHandler,
-  ToggleFavourite,
+  toggleFavourite,
   BackHandler,
 }) => {
   const {
@@ -52,7 +52,7 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
         style={styles.ItemBackgroundImage}
         source={imagelink_portrait}
       >
-        {EnableBackHandler ? (
+        {EnableBackHandler && BackHandler ? (
           <View style={styles.ImageHeaderBarContainerWithBack}>
             <TouchableOpacity onPress={() => BackHandler()}>
               <GradientBGIcon
@@ -62,7 +62,7 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
               />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => ToggleFavourite(favourite, type, id)}
+              onPress={() => toggleFavourite(favourite, type, id)}
             >
               <GradientBGIcon
                 name="like"
@@ -75,7 +75,11 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
           </View>
         ) : (
           <View style={styles.ImageHeaderBarContainerWithoutBack}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                toggleFavourite(favourite, type, id);
+              }}
+            >
               <GradientBGIcon
                 name="like"
                 color={
@@ -152,8 +156,8 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
 
 const styles = StyleSheet.create({
   ItemBackgroundImage: {
-    width: windowWidth,
-    aspectRatio: .8,
+    width: "100%",
+    aspectRatio: 0.8,
     justifyContent: "space-between",
   },
   ImageHeaderBarContainerWithBack: {
@@ -171,7 +175,7 @@ const styles = StyleSheet.create({
   },
   ImageInfoOuterContainer: {
     paddingVertical: SPACING.space_24,
-    paddingHorizontal: SPACING.space_30,
+    paddingHorizontal: windowWidth * 0.05,
     backgroundColor: COLORS.primaryBlackRGBA,
     borderTopLeftRadius: SPACING.space_20 * 2,
     borderTopRightRadius: SPACING.space_20 * 2,

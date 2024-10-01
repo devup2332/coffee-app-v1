@@ -62,7 +62,7 @@ const DetailsScreen: React.FC<DetailsScreenProps> = ({ navigation, route }) => {
         <ImageBackgroundInfo
           item={itemFounded}
           EnableBackHandler
-          ToggleFavourite={favouriteHandler}
+          toggleFavourite={favouriteHandler}
           BackHandler={backHandler}
         />
 

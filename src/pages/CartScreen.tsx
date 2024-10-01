@@ -73,7 +73,16 @@ const CartScreen: React.FC<CartScreenProps> = ({ navigation }) => {
                 />
                 {cartList.map((item) => {
                   return (
-                    <TouchableOpacity onPress={() => { }} key={item.id}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate("Details", {
+                          type: item.type,
+                          id: item.id,
+                          index: item.index,
+                        });
+                      }}
+                      key={item.id}
+                    >
                       <CartItemCard
                         item={item}
                         decrementQuantityHandler={decrementQuantityHandler}

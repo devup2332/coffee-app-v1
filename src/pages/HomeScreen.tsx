@@ -68,7 +68,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       index: 0,
     });
     setSortedCoffee(
-      CoffeeList.filter((item) => item.name.toLowerCase().includes(text)),
+      CoffeeList.filter((item) =>
+        item.name.toLowerCase().includes(text.toLowerCase()),
+      ),
     );
   };
 
@@ -108,7 +110,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
         {/* Input  */}
         <View style={styles.InputContainerComponent}>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => { }}>
             <CustomIcon
               name="search"
               size={FONTSIZE.size_18}
@@ -172,8 +174,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                       styles.CategorieText,
                       categoryIndex.index === index
                         ? {
-                            color: COLORS.primaryOrangeHex,
-                          }
+                          color: COLORS.primaryOrangeHex,
+                        }
                         : {},
                     ]}
                   >
