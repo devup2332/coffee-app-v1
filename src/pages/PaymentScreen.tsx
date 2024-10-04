@@ -65,7 +65,6 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ navigation }) => {
   const handlePayment = () => {
     setLoading(true);
     setTimeout(() => {
-      console.log("Payment Successful");
       generateOrder();
       setLoading(false);
       navigation.navigate("History");

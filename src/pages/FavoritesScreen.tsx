@@ -29,10 +29,8 @@ const FavoritesScreen = () => {
   const deleteFromFavoriteList = useStore(
     (state) => state.deleteFromFavoriteList,
   );
-  console.log({ favoritesList });
 
   const favoriteHandler = (favorite: boolean, type: string, id: string) => {
-    console.log({ favorite, type, id });
     favorite ? deleteFromFavoriteList(type, id) : addToFavoriteList(type, id);
   };
   return (

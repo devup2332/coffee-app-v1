@@ -232,7 +232,6 @@ export const useStore = create<IStore>()(
             };
 
             state.orders.unshift(newOrder);
-            console.log(state.orders.length);
             state.CartPrice = 0;
             state.CartList = [];
           }),
