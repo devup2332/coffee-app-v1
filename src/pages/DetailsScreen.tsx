@@ -2,7 +2,6 @@ import {
   View,
   Text,
   StyleSheet,
-  StatusBar,
   ScrollView,
   TouchableWithoutFeedback,
   TouchableOpacity,
@@ -14,6 +13,7 @@ import ImageBackgroundInfo from "../components/ImageBackgroundInfo";
 import { useStore } from "../store/store";
 import PaymentFooter from "../components/PaymentFooter";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 
 interface DetailsScreenProps {
   navigation: any;
