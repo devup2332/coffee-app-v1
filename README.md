@@ -1,7 +1,7 @@
 # Coffe App
 This application is a simple coffee ordering app. It allows the user to select the type of coffee they want, the size, and the quantity. The app then calculates the total cost of the order. The app also allows the user to add toppings to their coffee order. The app is built using Expo and React Native. 
 
-<p>
+<p align="center">
     <img src="https://res.cloudinary.com/dder8kjda/image/upload/v1728654817/Screenshot_2024-10-11_08-52-59_pdioar.png" width="700"/>
 </p>
 
